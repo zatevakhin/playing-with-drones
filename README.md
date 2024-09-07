@@ -17,3 +17,5 @@ container-runx
 # In new shell in container run desired example
 python3 PegasusSimulator/examples/1_px4_single_vehicle.py
 ```
+### Cleanup
+- Cleanup cache: `cleanup-garbage`

@@ -61,6 +61,11 @@
       "pegasus-isaac-sim-$ISAAC_SIM_VERSION:latest" "$@"
   '';
 
+  # https://devenv.sh/scripts/
+  scripts.cleanup-garbage.exec = ''
+    rm -rI "$HOME/.cache/docker/isaac-sim/"
+  '';
+
   enterShell = '''';
 
   # See full reference at https://devenv.sh/reference/options/
