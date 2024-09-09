@@ -43,6 +43,11 @@
   scripts.container-runx.exec = ''
     # Disable X11 server access control
     xhost +
+
+    # Get python version from container...
+    python_version=$(docker run -it --rm "pegasus-isaac-sim-$ISAAC_SIM_VERSION:latest" python3 -V 2>&1 | sed -E 's/.*Python ([0-9]+\.[0-9]+).*/\1/')
+    # NOTE: We need $python_version due to Nvidia is a bit crazy and they put cache into `/usr/local/lib/python3.xx/dist-packages/omni/cache/Kit`
+
     # Run Container
     docker run --name isaac-sim-launcher -it --gpus all --rm --network=host \
       -e ROS_DOMAIN_ID \
@@ -51,6 +56,7 @@
       -e DISPLAY \
       -v "$HOME/.Xauthority:/root/.Xauthority" \
       -v "$HOME/.cache/docker/isaac-sim/cache/kit:/isaac-sim/kit/cache:rw" \
+      -v "$HOME/.cache/docker/isaac-sim/cache/py.kit:/usr/local/lib/python$python_version/dist-packages/omni/cache/Kit:rw" \
       -v "$HOME/.cache/docker/isaac-sim/cache/ov:/root/.cache/ov:rw" \
       -v "$HOME/.cache/docker/isaac-sim/cache/pip:/root/.cache/pip:rw" \
       -v "$HOME/.cache/docker/isaac-sim/cache/glcache:/root/.cache/nvidia/GLCache:rw" \
